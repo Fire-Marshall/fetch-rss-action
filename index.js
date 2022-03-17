@@ -51,7 +51,8 @@ async function fetchGamersky() {
   ${entries}
 </feed>
 `;
-  exec.exec(`cat >rss.xml<<EOF${feed}EOF`);
+  // exec.exec(`cat >rss.xml<<EOF${feed}EOF`);
+  core.setOutput('feed', feed);
 }
 
 try {
