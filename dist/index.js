@@ -12907,7 +12907,7 @@ async function fetchGamersky() {
   ${entries}
 </feed>
 `;
-  exec.exec(`echo -e ${feed} > rss.xml`);
+  exec.exec(`cat >rss.xml<<EOF${feed}EOF`);
 }
 
 try {
