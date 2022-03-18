@@ -12897,7 +12897,7 @@ async function fetchGamersky() {
     .join('')
     .trim();
 
-  const feed = `
+  return `
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>游民星空</title>
@@ -12907,12 +12907,53 @@ async function fetchGamersky() {
   ${entries}
 </feed>
 `;
-  // exec.exec(`cat >rss.xml<<EOF${feed}EOF`);
-  core.setOutput('feed', feed);
+}
+
+async function fetch2cycd() {
+  const res = await axios({
+    method: 'get',
+    url: 'http://www.2cycd.com/forum.php?mod=forumdisplay&fid=43&filter=author&orderby=dateline',
+    responseType: 'text',
+    responseEncoding: 'gbk',
+  });
+  const matches = res.data.matchAll(
+    /<tbody id="normalthread_(\d+?)"[\s\S]+?class="s xst">(.+?)<\/a>[\s\S]+?c="1">(.+?)<\/a>[\s\S]+?<span title="(.+?)">[\s\S]+?<\/tbody>/g,
+  );
+  const result = [...matches];
+
+  const entries = result
+    .map(item => {
+      const link = `http://www.2cycd.com/forum.php?mod=viewthread&tid=${item[1]}`;
+      return `
+  <entry>
+    <title>${item[2]}</title>
+    <link href="${link}" rel="alternate"/>
+    <id>${link}</id>
+    <updated>${new Date(item[4])}</updated>
+    <author><name>${item[3]}</name></author>
+    <summary type="html">
+      <![CDATA[<p>item[2]</p>]]>
+    </summary>
+  </entry>`;
+    })
+    .join('')
+    .trim();
+
+  return `
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>二次元虫洞</title>
+  <link href="http://www.2cycd.com/" rel="alternate"/>
+  <updated>${new Date().toISOString()}</updated>
+  <id>http://www.2cycd.com/</id>
+  ${entries}
+</feed>
+`;
 }
 
 try {
-  fetchGamersky();
+  fetchGamersky().then(feed => core.setOutput('gamersky', feed));
+  fetch2cycd().then(feed => core.setOutput('2cycd', feed));
 
   /* // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
