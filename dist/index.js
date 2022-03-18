@@ -16027,7 +16027,7 @@ async function fetch2cycd() {
   const res = await axios({
     method: 'get',
     url: 'http://www.2cycd.com/forum.php?mod=forumdisplay&fid=43&filter=author&orderby=dateline',
-    responseType: 'blob',
+    responseType: 'arraybuffer',
     transformResponse: [data => iconv.decode(data, 'gbk')],
   });
   const matches = res.data.matchAll(
