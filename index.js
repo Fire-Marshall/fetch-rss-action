@@ -97,7 +97,7 @@ async function fetch2cycd() {
 
 try {
   fetchGamersky().then((feed) => core.setOutput('gamersky', feed));
-  fetch2cycd().then((feed) => core.setOutput('Tcycd', feed));
+  fetch2cycd().then((feed) => core.setOutput('tcycd', feed));
 
   /* // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
