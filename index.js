@@ -21,7 +21,7 @@ async function fetchGamersky() {
   const { errorCode, errorMessage, result } = res.data;
 
   const entries = result
-    .map(item => {
+    .map((item) => {
       const link =
         item.contentType === 'URL'
           ? item.contentURL.replace(/\?.+/, '')
@@ -61,12 +61,12 @@ async function fetch2cycd() {
     // responseEncoding: 'gbk',
   });
   const matches = res.data.matchAll(
-    /<tbody id="normalthread_(\d+?)"[\s\S]+?class="s xst">(.+?)<\/a>[\s\S]+?c="1">(.+?)<\/a>[\s\S]+?<span title="(.+?)">[\s\S]+?<\/tbody>/g,
+    /<tbody id="normalthread_(\d+?)"[\s\S]+?class="s xst">(.+?)<\/a>[\s\S]+?c="1">(.+?)<\/a>[\s\S]+?<span title="(.+?)">[\s\S]+?<\/tbody>/g
   );
   const result = [...matches];
 
   const entries = result
-    .map(item => {
+    .map((item) => {
       const link = `http://www.2cycd.com/forum.php?mod=viewthread&tid=${item[1]}`;
       return `
   <entry>
@@ -96,8 +96,8 @@ async function fetch2cycd() {
 }
 
 try {
-  fetchGamersky().then(feed => core.setOutput('gamersky', feed));
-  fetch2cycd().then(feed => core.setOutput('2cycd', feed));
+  fetchGamersky().then((feed) => core.setOutput('gamersky', feed));
+  fetch2cycd().then((feed) => core.setOutput('Tcycd', feed));
 
   /* // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
