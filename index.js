@@ -53,23 +53,14 @@ async function fetchGamersky() {
 `;
 }
 
-function blob2Text(data) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.readAsText(data, 'GBK');
-    reader.onload = () => {
-      return resolve(reader.result);
-    };
-  });
-}
-
 async function fetch2cycd() {
   const res = await axios({
     method: 'get',
     url: 'http://www.2cycd.com/forum.php?mod=forumdisplay&fid=43&filter=author&orderby=dateline',
     responseType: 'blob',
+    transformResponse: [data => iconv.decode(data, 'gbk')],
   });
-  const matches = await blob2Text(res.data).matchAll(
+  const matches = res.data.matchAll(
     /<tbody id="normalthread_(\d+?)"[\s\S]+?class="s xst">(.+?)<\/a>[\s\S]+?c="1">(.+?)<\/a>[\s\S]+?<span title="(.+?)">[\s\S]+?<\/tbody>/g,
   );
   const result = [...matches];
