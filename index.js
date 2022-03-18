@@ -58,7 +58,7 @@ async function fetch2cycd() {
     method: 'get',
     url: 'http://www.2cycd.com/forum.php?mod=forumdisplay&fid=43&filter=author&orderby=dateline',
     responseType: 'text',
-    responseEncoding: 'gbk',
+    // responseEncoding: 'gbk',
   });
   const matches = res.data.matchAll(
     /<tbody id="normalthread_(\d+?)"[\s\S]+?class="s xst">(.+?)<\/a>[\s\S]+?c="1">(.+?)<\/a>[\s\S]+?<span title="(.+?)">[\s\S]+?<\/tbody>/g,
